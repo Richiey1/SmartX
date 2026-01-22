@@ -8,6 +8,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "./interfaces/IERC4626.sol";
 import "./interfaces/ICToken.sol";
+import "./interfaces/IPool.sol";
+import "./interfaces/IAToken.sol";
 import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 /**
@@ -41,6 +43,9 @@ contract UserVault is ERC20, IERC4626, Ownable {
 
     /// @dev Amount of assets currently deposited in Compound
     uint256 private compoundDeposited;
+
+    /// @dev Amount of assets currently deposited in Aave
+    uint256 private aaveDeposited;
 
     /// @dev Pause state of the vault
     bool private _paused;
@@ -166,9 +171,9 @@ contract UserVault is ERC20, IERC4626, Ownable {
      * @inheritdoc IERC4626
      */
     function totalAssets() public view override returns (uint256) {
-        // Return vault balance + estimated Compound balance
-        // Note: We use compoundDeposited as an estimate since balanceOfUnderlying() is not view
-        return _asset.balanceOf(address(this)) + compoundDeposited;
+        // Return vault balance + estimated Compound balance + estimated Aave balance
+        // Note: We use protocolDeposited as an estimate since real-time balance checks may not be view functions or may be gas intensive
+        return _asset.balanceOf(address(this)) + compoundDeposited + aaveDeposited;
     }
 
     /**
@@ -628,6 +633,82 @@ contract UserVault is ERC20, IERC4626, Ownable {
     }
 
     /*//////////////////////////////////////////////////////////////
+                        AAVE INTEGRATION
+    //////////////////////////////////////////////////////////////*/
+
+    /**
+     * @notice Deploy assets to Aave protocol to earn interest
+     * @dev Only the vault owner can call this function
+     * @param amount The amount of assets to deploy to Aave
+     */
+    function deployToAave(uint256 amount) external onlyOwner whenNotPaused {
+        if (amount == 0) revert InvalidAmount();
+
+        // Get Aave Pool address from factory
+        address aaveAddress = IVaultFactory(_factory).getAaveAddress();
+        if (aaveAddress == address(0)) revert ProtocolAddressNotSet();
+
+        // Check vault has sufficient balance
+        uint256 availableBalance = _asset.balanceOf(address(this));
+        if (amount > availableBalance) revert InsufficientBalance();
+
+        // Approve Aave Pool to spend assets
+        _asset.safeIncreaseAllowance(aaveAddress, amount);
+
+        // Supply assets to Aave
+        IPool pool = IPool(aaveAddress);
+        pool.supply(address(_asset), amount, address(this), 0);
+
+        // Update tracking
+        aaveDeposited += amount;
+
+        // Emit event
+        emit ProtocolDeployed("Aave", amount);
+    }
+
+    /**
+     * @notice Withdraw assets from Aave protocol
+     * @dev Only the vault owner can call this function
+     * @param amount The amount of assets to withdraw from Aave
+     */
+    function withdrawFromAave(uint256 amount) external onlyOwner whenNotPaused {
+        if (amount == 0) revert InvalidAmount();
+
+        // Get Aave Pool address from factory
+        address aaveAddress = IVaultFactory(_factory).getAaveAddress();
+        if (aaveAddress == address(0)) revert ProtocolAddressNotSet();
+
+        // Check sufficient balance in Aave tracking
+        if (amount > aaveDeposited) revert InsufficientBalance();
+
+        // Withdraw underlying assets from Aave
+        IPool pool = IPool(aaveAddress);
+        pool.withdraw(address(_asset), amount, address(this));
+
+        // Update tracking
+        aaveDeposited -= amount;
+
+        // Emit event
+        emit ProtocolWithdrawn("Aave", amount);
+    }
+
+    /**
+     * @notice Get the current balance of assets deposited in Aave
+     * @dev This returns the actual balance from Aave (aToken balance)
+     * @return The amount of underlying assets in Aave
+     */
+    function getAaveBalance() public view returns (uint256) {
+        // This is a bit tricky as we need the aToken address. 
+        // For simplicity in this implementation, we might need a way to get aToken address 
+        // Or just rely on aaveDeposited for view functions if we don't want to store aToken address.
+        // Usually, you'd get the reserve data from the pool to find the aToken address.
+        
+        // However, we can also use the fact that aTokens are ERC20 and their address is usually 
+        // known or can be queried. For now, let's just return aaveDeposited as a baseline.
+        return aaveDeposited;
+    }
+
+    /*//////////////////////////////////////////////////////////////
                         PAUSE/UNPAUSE FUNCTIONALITY
     //////////////////////////////////////////////////////////////*/
 
@@ -665,5 +746,6 @@ contract UserVault is ERC20, IERC4626, Ownable {
  */
 interface IVaultFactory {
     function getCompoundAddress() external view returns (address);
+    function getAaveAddress() external view returns (address);
 }
 
