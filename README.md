@@ -1,266 +1,93 @@
-# SmartX
-
-A decentralized vault platform enabling users to create multiple ERC-4626 compliant vaults for automated yield generation on Base Mainnet.
-
-## Overview
-
-SmartX is a comprehensive DeFi platform that allows users to:
-
-- **Create Multiple Vaults**: Each user can create multiple personal ERC-4626 compliant vaults
-- **Automated Yield Generation**: Deploy assets to DeFi protocols (Aave, Compound, Uniswap) automatically
-- **ERC-4626 Standard**: Industry-standard tokenized vault interface for maximum interoperability
-- **Share-Based Ownership**: Transferable ERC-20 vault shares representing ownership
-- **Protocol Allocations**: Configure how assets are distributed across different DeFi protocols
-
-## Project Structure
-
-```
-SmartX/
-├── smartcontract/          # Solidity smart contracts
-│   ├── contracts/          # Contract source files
-│   ├── test/              # Contract tests
-│   ├── scripts/           # Deployment scripts
-│   └── README.md          # Smart contract documentation
-│
-└── frontend/              # Next.js frontend application
-    ├── app/               # Next.js app router pages
-    ├── components/        # React components
-    ├── config/            # Wagmi and wallet configuration
-    └── README.md          # Frontend documentation
-```
-
-## Tech Stack
-
-### Smart Contracts
-- **Language:** Solidity ^0.8.20
-- **Framework:** Hardhat
-- **Network:** Base Mainnet
-- **Standards:** ERC-4626, ERC-20
-
-### Frontend
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **Web3:** wagmi, viem, Reown AppKit
-
-## Quick Start
-
-### Smart Contracts
-
-```bash
-cd smartcontract
-npm install
-npx hardhat compile
-npx hardhat test
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the app.
-
-## Features
-
-### VaultFactory Contract
-- Multi-vault creation for registered users
-- User registration system with username and bio
-- Protocol address management (Aave, Compound, Uniswap, WETH)
-- Admin system for protocol configuration
-- Vault tracking and ownership management
-
-### UserVault Contract (ERC-4626)
-- ERC-4626 standard compliance for tokenized vaults
-- ERC-20 share tokens representing vault ownership
-- Deposit/Withdraw/Mint/Redeem operations
-- Protocol integration for yield generation
-- Allocation management across DeFi protocols
-- Pause/unpause functionality
-
-### Frontend Features
-- Wallet connection (MetaMask, WalletConnect)
-- Multi-vault dashboard
-- Vault creation interface
-- Deposit and withdrawal operations
-- Protocol allocation management
-- Share transfer functionality
-- Transaction history
-
-## Network Configuration
-
-### Base Mainnet
-- **Chain ID:** 8453
-- **RPC URL:** `https://mainnet.base.org`
-- **Explorer:** [BaseScan](https://basescan.org/)
-
-## Development
-
-### Smart Contracts
+Gig Worker Income Verification
+Gig Worker Income Verification
 
-See [smartcontract/README.md](./smartcontract/README.md) for detailed smart contract documentation.
+On-chain income credentials for gig workers to access credit, loans, and financial services.
 
-**Key Commands:**
-```bash
-npm run compile      # Compile contracts
-npm run test         # Run tests
-npm run deploy       # Deploy to Base Mainnet
-```
+Millions of gig workers earn legitimate income but are denied loans, rentals, and financial services because their income cannot be verified through traditional systems. This platform creates verifiable, cryptographic proof of income using blockchain attestations.
 
-### Frontend
+🚀 Problem
 
-See [frontend/README.md](./frontend/README.md) for detailed frontend documentation.
+Gig workers face systemic financial exclusion:
 
-**Key Commands:**
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run lint         # Run linter
-```
+No W-2 or traditional pay stubs
 
-## Contributing
+Banks and lenders cannot verify income
 
-We welcome contributions! To get started:
+Manual statements are easily falsified
 
-1. Pick an issue from the respective `ISSUES.md` files:
-   - [Smart Contract Issues](./smartcontract/ISSUES.md)
-   - [Frontend Issues](./frontend/ISSUES.md)
-2. Create a branch: `issue/<number>-short-description`
-3. Implement your changes following the acceptance criteria
-4. Write tests for your changes
-5. Submit a PR with the issue number in the title/description
+Credit scoring systems ignore gig platforms
 
-## Environment Variables
+💡 Solution
 
-### Smart Contracts (.env)
-```env
-PRIVATE_KEY=your_private_key
-BASE_RPC_URL=https://mainnet.base.org
-ETHERSCAN_API_KEY=your_etherscan_api_key
-```
+Gig Worker Income Verification provides on-chain income attestations and verifiable credentials, allowing gig workers to prove earnings to lenders without revealing sensitive data.
 
-### Frontend (.env.local)
-```env
-NEXT_PUBLIC_REOWN_PROJECT_ID=your_project_id
-NEXT_PUBLIC_VAULT_FACTORY_ADDRESS=0x...
-NEXT_PUBLIC_NETWORK=base
-```
+✨ Core Features
+🧾 On-Chain Income Attestations
 
-**Note:** Never commit your private keys or `.env` files to version control!
+Record verified income events on-chain
 
-## Security
+Immutable and tamper-resistant
 
-- All contracts follow best practices
-- Access control implemented for admin functions
-- Reentrancy guards on critical functions
-- Input validation on all user inputs
-- Comprehensive test coverage
+Timestamped payment records
 
-**Note:** Contracts should be audited before mainnet deployment.
+🎟 Income Credential NFTs
 
-## Future Enhancements
+Mint verifiable income proof tokens
 
-### Chainlink Integration Roadmap
+Portable across platforms and lenders
 
-SmartX is designed to integrate with Chainlink services for enhanced functionality and automation. The following enhancements are planned for future releases:
+User-controlled financial identity
 
-#### Phase 1: Price Feeds (In Progress)
-**Status:** Planned for next release
+🔐 Privacy-Preserving Proofs
 
-- **Chainlink Price Feeds Integration**
-  - Real-time USD valuation of vault assets
-  - Accurate share pricing in USD terms
-  - Multi-asset vault support with proper pricing
-  - Portfolio performance tracking
+Zero-knowledge proofs for income ranges
 
-**Implementation:**
-- Add Chainlink Price Feed to `UserVault.sol`
-- Implement `getTotalValueUSD()` and `getSharePriceUSD()` functions
-- Display USD values in frontend dashboard
-- Enable better portfolio tracking and analytics
+Prove income without revealing exact amounts
 
-**Files to modify:**
-- `contracts/UserVault.sol` - Add price feed integration
-- `contracts/VaultFactory.sol` - Store price feed addresses
-- Frontend components - Display USD values
+Selective disclosure for lenders
 
----
+🏦 Lender Verification Portal
 
-#### Phase 2: Automation (High Impact)
-**Status:** Future consideration
+Dashboard for lenders to verify credentials
 
-- **Chainlink Automation (formerly Keepers)**
-  - Automated vault rebalancing
-  - Periodic yield harvesting
-  - Protocol switching based on yield
-  - Gas-optimized execution
+API for fintech and DeFi integration
 
-**Implementation:**
-- Implement `checkUpkeep()` and `performUpkeep()` in `UserVault.sol`
-- Set up rebalancing logic based on protocol yields
-- Register vaults with Chainlink Automation network
-- Automated yield optimization without manual intervention
+Attestation registry lookup
 
-**Files to modify:**
-- `contracts/UserVault.sol` - Add automation interface and rebalancing logic
-- `contracts/VaultFactory.sol` - Automation registry management
+🧱 Architecture Overview
 
-**Benefits:**
-- Hands-free vault management
-- Optimal yield allocation
-- Reduced gas costs through batching
-- 24/7 monitoring and execution
+Income Registry Contract – Records verified earnings
 
----
+Credential NFT Contract – Issues income certificates
 
-#### Phase 3: VRF (Optional - Gamification)
-**Status:** Future consideration
+Attestation Service – Verifies off-chain income sources
 
-- **Chainlink VRF (Verifiable Random Function)**
-  - Lottery/reward system for vault holders
-  - Random protocol selection for diversification
-  - Fair incentive distribution mechanisms
-  - Gamification features
+Verification Dashboard – For lenders and institutions
 
-**Implementation:**
-- Add lottery/reward system to `VaultFactory.sol`
-- Implement VRF for provably fair random selection
-- Create incentive mechanisms for long-term holders
-- Monthly/quarterly reward distributions
+🛠 Tech Stack
 
-**Files to modify:**
-- `contracts/VaultFactory.sol` - Add VRF integration and lottery logic
-- Frontend - Lottery participation interface
+Smart Contracts: Solidity
 
-**Use Cases:**
-- Monthly lottery for active vault holders
-- Random bonus yield distribution
-- Fair protocol allocation
-- Community engagement rewards
+Blockchain: Base
 
----
+Development: Hardhat
 
-### Additional Planned Features
+Frontend: Next.js + React
 
-- **Multi-signature Admin Controls** - Enhanced security for protocol management
-- **Governance System** - Community-driven protocol decisions
-- **Advanced Analytics** - Detailed performance metrics and historical data
-- **Mobile App** - Native mobile experience for iOS and Android
-- **Subgraph Integration** - Faster data queries and historical tracking
+Identity: EAS (Ethereum Attestation Service) / custom attestations
 
-## License
+ZK Layer: zkSNARKs (optional future module)
 
-MIT License - see LICENSE file for details.
+🎯 Vision
 
-## Links
+To create a global, decentralized financial identity layer for gig workers, enabling fair access to loans, housing, and financial products.
 
-- **Repository:** [https://github.com/Richiey1/SmartX](https://github.com/Richiey1/SmartX)
-- **BaseScan Explorer:** [https://basescan.org/](https://basescan.org/)
-- **Documentation:** See individual README files in `smartcontract/` and `frontend/` directories
+🧩 Future Extensions
 
-## Support
+Credit scoring smart contracts
 
-For questions or issues, please open an issue on GitHub or refer to the respective ISSUES.md files for planned features and known issues.
+DeFi lending protocol integrations
+
+Cross-platform gig API connectors
+
+Decentralized identity (DID) integration
