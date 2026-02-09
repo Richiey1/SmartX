@@ -5,7 +5,7 @@ This file tracks the development tasks for the GigID frontend application.
 ## ❌ Pending Issues
 
 ### Issue #1: Worker Onboarding & Wallet Integration
-**Status:** ❌ PENDING  
+**Status:** 🚧 IN_PROGRESS  
 **Labels:** `frontend`, `ux`, `web3`  
 **Priority:** HIGH
 
@@ -14,7 +14,7 @@ Set up the core onboarding flow and wallet connection for gig workers.
 
 **Acceptance Criteria:**
 - [ ] Reown AppKit integration for multiple wallet support.
-- [ ] Wallet-based authentication.
+- [x] Wallet-based authentication (Navbar integration).
 - [ ] Initial profile setup (Name, Gig Platforms).
 
 ---

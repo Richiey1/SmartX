@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SmartX | Decentralized Vault Protocol",
-  description: "Personalized ERC-4626 vaults for automated yield generation on Base.",
+  title: "GigID | Gig Worker Income Verification",
+  description: "On-chain income credentials for gig workers to access credit, loans, and financial services on Base.",
 };
 
 export default function RootLayout({
