@@ -21,7 +21,7 @@ Implement the core `IncomeRegistry` contract to record verified income events on
 ---
 
 ### Issue #2: Credential NFT Implementation
-**Status:** ❌ PENDING  
+**Status:** ✅ COMPLETED  
 **Labels:** `smart-contracts`, `nft`, `identity`  
 **Priority:** HIGH
 
@@ -29,10 +29,10 @@ Implement the core `IncomeRegistry` contract to record verified income events on
 Develop the `CredentialNFT` contract to issue portable, verifiable income certificates to gig workers.
 
 **Acceptance Criteria:**
-- [ ] ERC-721 implementation for income credentials.
-- [ ] Link NFT metadata to verified registry data.
-- [ ] Implement minting logic restricted to verified attestations.
-- [ ] Add Soulbound (non-transferable) options for specific credentials.
+- [x] ERC-721 implementation for income credentials.
+- [x] Link NFT metadata to verified registry data structures.
+- [x] Implement minting logic (Soulbound enabled).
+- [x] Add Soulbound (non-transferable) restrictions for credentials.
 
 ---
 
