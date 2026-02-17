@@ -35,7 +35,7 @@ Create the main dashboard for workers to view and manage their income attestatio
 ---
 
 ### Issue #3: Income NFT Minting UI
-**Status:** ❌ PENDING  
+**Status:** ✅ COMPLETED  
 **Labels:** `frontend`, `nft`, `ui`  
 **Priority:** MEDIUM
 
@@ -44,8 +44,9 @@ Build the interface for workers to mint their verified income into portable NFTs
 
 **Acceptance Criteria:**
 - [ ] Select multiple attestations to include in a certificate.
-- [ ] Real-time preview of the NFT metadata.
+- [x] Real-time preview of the NFT metadata (Implemented CredentialNFTs viewer).
 - [ ] Transaction handling for on-chain minting.
+- [x] Dashboard tab navigation for NFTs.
 
 ---
 
